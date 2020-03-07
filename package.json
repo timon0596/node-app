@@ -1,0 +1,46 @@
+{
+  "name": "node-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timon0596/node-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/timon0596/node-app/issues"
+  },
+  "homepage": "https://github.com/timon0596/node-app#readme",
+  "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "babel-loader": "^8.0.6",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-sass": "^4.0.2",
+    "nodemon": "^2.0.2",
+    "vue-loader": "^15.9.0",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.42.0",
+    "webpack-stream": "^5.2.1"
+  },
+  "browserslist": "> 0.25%, not dead",
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.16.1",
+    "vue": "^2.6.11"
+  }
+}
