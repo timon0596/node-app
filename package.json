@@ -1,5 +1,4 @@
 {
-  "name": "node-app",
   "name": "nodeapp",
   "version": "1.0.0",
   "description": "",
@@ -12,7 +11,6 @@
     "url": "git+https://github.com/timon0596/node-app.git"
   },
   "keywords": [],
-  "author": "",
   "author": "tim",
   "license": "ISC",
   "bugs": {
@@ -20,8 +18,6 @@
   },
   "homepage": "https://github.com/timon0596/node-app#readme",
   "devDependencies": {
-    "@babel/core": "^7.8.7",
-    "@babel/preset-env": "^7.8.7",
     "@babel/core": "^7.8.6",
     "@babel/preset-env": "^7.8.6",
     "babel-loader": "^8.0.6",
@@ -46,15 +42,16 @@
     "bootstrap": "^4.4.1",
     "jquery": "^3.4.1",
     "popper.js": "^1.16.1",
-  "dependencies": {
-    "bootstrap": "^4.4.1",
-    "css-loader": "^3.4.2",
-    "gulp-sass": "^4.0.2",
-    "jquery": "^3.4.1",
-    "mysql": "^2.18.1",
-    "popper.js": "^1.16.1",
-    "sass-loader": "^8.0.2",
-    "style-loader": "^1.1.3",
-    "vue": "^2.6.11"
+    "dependencies": {
+      "bootstrap": "^4.4.1",
+      "css-loader": "^3.4.2",
+      "gulp-sass": "^4.0.2",
+      "jquery": "^3.4.1",
+      "mysql": "^2.18.1",
+      "popper.js": "^1.16.1",
+      "sass-loader": "^8.0.2",
+      "style-loader": "^1.1.3",
+      "vue": "^2.6.11"
+    }
   }
 }

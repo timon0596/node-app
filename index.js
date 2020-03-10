@@ -1,6 +1,6 @@
 const h = require('http')
 const fs = require('fs')
-s = new h.Server((req,res)=>{
+const s = new h.Server((req,res)=>{
 	console.log(req.url)
 	if(req.url=='/'){
 		res.writeHead(200,{"Content-Type": "text/html"})
