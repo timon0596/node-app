@@ -1,5 +1,19 @@
 const h = require('http')
 const fs = require('fs')
+const seq = require('sequelize')
+const conn = new seq('pie_db','root','',{host: 'localhost', dialect: 'mysql'})
+conn.define('products',{
+	name: {
+		type: seq.STRING
+	},
+	composition: {
+		type: seq.STRING
+	},
+	description: {
+		type: seq.STRING
+	},
+})
+conn.sync()
 const s = new h.Server((req,res)=>{
 	console.log(req.url)
 	if(req.url=='/'){
