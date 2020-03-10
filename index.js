@@ -1,4 +1,4 @@
-h = require('http')
+const h = require('http')
 const fs = require('fs')
 s = new h.Server((req,res)=>{
 	console.log(req.url)
@@ -14,5 +14,7 @@ s = new h.Server((req,res)=>{
 		res.writeHead(200,{"Content-Type": "text/javascript"})
 		res.end(fs.readFileSync('./app/bundle.js'))
 	}
+
+
 })
 s.listen(3000,'127.0.0.1')

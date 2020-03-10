@@ -47,3 +47,4 @@ gulp.task('watch',gulp.series('js',()=>{
 	gulp.watch(['./sass/**/*.sass'],gulp.series('sass'))
 	gulp.watch(['./app/all.js','./app/js/**/*.js'],gulp.series('js'))
 }))
+
