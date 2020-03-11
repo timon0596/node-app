@@ -30,6 +30,7 @@ gulp.task('js',()=>{
 				},
 				{
 					test: /\.vue$/,
+					exclude: /node_modeles/,
 					loader: 'vue-loader'
 				}
 			]
@@ -45,6 +46,6 @@ gulp.task('js',()=>{
 })
 gulp.task('watch',gulp.series('js',()=>{
 	gulp.watch(['./sass/**/*.sass'],gulp.series('sass'))
-	gulp.watch(['./app/all.js','./app/js/**/*.js'],gulp.series('js'))
+	gulp.watch(['./app/all.js','./app/js/**/*.js','./app/**/*.vue'],gulp.series('js'))
 }))
 
