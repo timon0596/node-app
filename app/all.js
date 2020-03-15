@@ -4,6 +4,11 @@ import Vue from 'vue'
 import app from './app.vue'
 new Vue({
 	el: '.form',
-	render: h=>h(app)
+	render: h=>h(app),
+
+	data: {
+		products: []
+	}
+
 })
-console.log(Vue)
+

@@ -17,12 +17,13 @@ gulp.task('js',()=>{
 		output: {
 			filename: 'bundle.js'
 		},
-		mode: 'production',
+		mode: 'development',
+		devtool: 'eval-source-map',
 		module:{
 			rules: [
 				{
 					test: /\.js$/,
-					exclude: /node_modeles/,
+					exclude: /node_modules/,
 					loader: 'babel-loader',
 					options: {
 						presets: ['@babel/preset-env']
@@ -30,10 +31,22 @@ gulp.task('js',()=>{
 				},
 				{
 					test: /\.vue$/,
-					exclude: /node_modeles/,
+					exclude: /node_modules/,
 					loader: 'vue-loader'
 				}
 			]
+		},
+		optimization: {
+			splitChunks:{
+				cacheGroups:{
+					vendor: {
+						name: 'vendor',
+						test: /node_modules/,
+						chunks: 'all',
+						enforce: true
+					}
+				}
+			}
 		},
 		plugins: [
 		    new webpack.ProvidePlugin({
