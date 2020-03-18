@@ -7,9 +7,9 @@
 	    <div class="btn btn-primary" role="button" @click="redact">редактировать</div>
 	  </div>
 	  <div v-show="isRedacting" class="card-body">
-	    <h4 class="card-title"><input type="text" v-model:value="productName"></h4>
+	    <h4 class="card-title"><input ref="changedName" type="text" v-model:value="productName"></h4>
 	    <textarea v-model="productComposition" class="card-text" :style="{height:textAreaHeight+'px'}"></textarea>
-	    <p>{{productComposition}}</p>
+	    <p ref="changedComposition">{{productComposition}}</p>
 	    <div class="btn btn-primary" role="button" @click="redact">редактировать</div>
 	    <div class="btn btn-primary" role="button" @click="save">сохранить</div>
 	    <div ref="id" class="productId" v-show="false">{{product.id}}</div>
@@ -43,8 +43,14 @@
 
 			},
 			save(){
-					this.$emit('DBtoUpdate',{name: this.productName,composition: this.productComposition,id: this.productId})
-				
+					console.log(this.productName)
+					console.log($(this.$refs.name).text())
+					console.log('\n')
+					console.log(this.productComposition)
+					console.log($(this.$refs.composition).text())
+					if(this.productName!=$(this.$refs.name).text() || this.productComposition!=$(this.$refs.composition).text()){
+						this.$emit('DBtoUpdate',{name: this.productName,composition: this.productComposition,id: this.productId})
+					}
 			}
 		},
 		mounted(){
