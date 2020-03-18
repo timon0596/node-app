@@ -5,6 +5,7 @@ const pref = require('gulp-autoprefixer')
 const wpkstr = require('webpack-stream')
 const webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
 gulp.task('sass',()=>{
 	return gulp.src('./sass/*.sass')
 		.pipe(conc('all.sass'))
@@ -22,6 +23,13 @@ gulp.task('js',()=>{
 		module:{
 			rules: [
 				{
+			        test: /\.css$/,
+			        use: [
+			          'vue-style-loader',
+			          'css-loader'
+			        ]
+			    },
+				{
 					test: /\.js$/,
 					exclude: /node_modules/,
 					loader: 'babel-loader',
@@ -32,7 +40,14 @@ gulp.task('js',()=>{
 				{
 					test: /\.vue$/,
 					exclude: /node_modules/,
-					loader: 'vue-loader'
+					loader: 'vue-loader',
+					options: {
+						loaders: {
+						            css: ExtractTextPlugin.extract({
+						              use: 'css-loader'
+						            })
+						          }
+					}
 				}
 			]
 		},
@@ -53,7 +68,11 @@ gulp.task('js',()=>{
 		      $: 'jquery',
 		      jQuery: 'jquery'
 		    }),
-		    new VueLoaderPlugin()
+		    new VueLoaderPlugin(),
+		    new ExtractTextPlugin({
+            filename: 'style.css',
+            allChunks: true
+        })
   		]
 	})).pipe(gulp.dest('app'))
 })

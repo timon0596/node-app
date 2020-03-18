@@ -41,8 +41,7 @@
 		mounted() {
 				const _this=this
 				this.mobserver = new MutationObserver(mutations => {
-					console.log($('html')[0].scrollHeight)
-					console.log(window.innerHeight)
+
 					if($('html')[0].scrollHeight<=window.innerHeight){
 						++_this.itemsToShow
 					}else{
@@ -60,6 +59,7 @@
 								threshold: 1.0
 							}
 			this.observer = new IntersectionObserver((entries,observer) => {
+				_this.$emit('intersecting',_this.itemsToShow)
 				entries.forEach((entry)=>{
 					if(entry.isIntersecting|| this.$refs.loader.getBoundingClientRect().top<window.innerHeight) {
 						++this.itemsToShow

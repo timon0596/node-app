@@ -1,7 +1,7 @@
 <template>
 	<div class="assorted container">
 		<div class="dg gg-1">
-				<menuItem v-for="(product,id) in products" :product="product" :id="id" :itemsToShow="itemsToShow"></menuItem>
+				<menuItem v-for="(product,id) in products" :product="product" :id="id" :itemsToShow="itemsToShow" :key="product.id"></menuItem>
 		</div>
 	</div>
 </template>
@@ -14,7 +14,8 @@
 			}
 		},
 		mounted(){$.get('/getProducts',(d)=>{
-			this.products = [...JSON.parse(d)]
+			this.products = [...JSON.parse(d)].reverse()
+			console.log([...JSON.parse(d)])
 			
 		})
 
