@@ -43,24 +43,20 @@
 
 			},
 			save(){
-					console.log(this.productName)
-					console.log($(this.$refs.name).text())
-					console.log('\n')
-					console.log(this.productComposition)
-					console.log($(this.$refs.composition).text())
+					
 					if(this.productName!=$(this.$refs.name).text() || this.productComposition!=$(this.$refs.composition).text()){
-						this.$emit('DBtoUpdate',{name: this.productName,composition: this.productComposition,id: this.productId})
+						this.$emit('dbtoupdate',{name: this.productName,composition: this.productComposition,id: this.productId})
+
 					}
 			}
 		},
 		mounted(){
-			this.$on('DBtoUpdate',(d)=>{
-				console.log(d)
-			})
+
 			this.$on('redacting',()=>{
 				this.textAreaHeight = $(this.$el).find('.card-text')[0].offsetHeight
 				this.isRedacting=!this.isRedacting
 			})
+			
 		}
 	}
 </script>

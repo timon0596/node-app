@@ -6,15 +6,8 @@ const wpkstr = require('webpack-stream')
 const webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
-gulp.task('sass',()=>{
-	return gulp.src('./sass/*.sass')
-		.pipe(conc('all.sass'))
-		.pipe(sass())
-		.pipe(pref())
-        .pipe(gulp.dest('app'))
-})
-gulp.task('js',()=>{
-	return gulp.src('./app/all.js').pipe(wpkstr({
+const WebpackConfig = {
+	entry: ['babel-polyfill', './app/all.js'],
 		output: {
 			filename: 'bundle.js'
 		},
@@ -74,7 +67,16 @@ gulp.task('js',()=>{
             allChunks: true
         })
   		]
-	})).pipe(gulp.dest('app'))
+	}
+gulp.task('sass',()=>{
+	return gulp.src('./sass/*.sass')
+		.pipe(conc('all.sass'))
+		.pipe(sass())
+		.pipe(pref())
+        .pipe(gulp.dest('app'))
+})
+gulp.task('js',()=>{
+	return gulp.src('./app/all.js').pipe(wpkstr(WebpackConfig,webpack)).pipe(gulp.dest('app'))
 })
 gulp.task('watch',gulp.series('js',()=>{
 	gulp.watch(['./sass/**/*.sass'],gulp.series('sass'))

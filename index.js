@@ -29,7 +29,7 @@ conn.sync()
 let error = ''
 const s = new h.Server((req,res)=>{
 	let data = ''
-	if(req.method == 'POST'){
+	if(req.method == 'POST'&&req.url=='/'){
 		req.on('data',(d)=>{
 			data=d
 		})
@@ -78,6 +78,21 @@ const s = new h.Server((req,res)=>{
 			res.end(JSON.stringify(p))
 		}
 		getProd()
+	}
+	if(req.url=='/update'){
+		let data
+		req.on('data',(d)=>{
+			data=JSON.parse(d)
+		})
+		req.on('end',()=>{
+			prod.update({name: data.name,composition: data.composition},{where: {id: data.id}}).then((d)=>{
+				console.log(d)
+				res.writeHead(200,{"Content-Type": "text/plain"})
+				res.end("данные обновлены")
+			}).catch((e)=>{
+				console.log(e)
+			})
+		})	
 	}
 	if(req.url=='/'){
 		res.writeHead(200,{"Content-Type": "text/html"})

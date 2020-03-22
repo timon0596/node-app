@@ -31,7 +31,6 @@
 		},
 		methods:{
 			postNewProduct: ()=>{
-
 				$.post('/',JSON.stringify({"name":($("input").val()==''?null:$("input").val()),"composition": $("textarea").val()}))
 			}
 		},
@@ -39,6 +38,7 @@
 			productsList: menu
 		},
 		mounted() {
+			
 				const _this=this
 				this.mobserver = new MutationObserver(mutations => {
 

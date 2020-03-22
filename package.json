@@ -21,7 +21,11 @@
     "@babel/core": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
     "babel-loader": "^8.0.6",
+    "babel-plugin-syntax-async-functions": "^6.13.0",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-regenerator": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "css-loader": "^3.4.2",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "gulp": "^4.0.2",
@@ -37,10 +41,8 @@
   },
   "browserslist": "> 0.25%, not dead",
   "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ],
-    "plugins": ["transform-async-to-generator"]
+    "presets": ["@babel/preset-env"],
+    "plugins": ["syntax-async-functions","transform-regenerator"]
   },
   "dependencies": {
     "bootstrap": "^4.4.1",
