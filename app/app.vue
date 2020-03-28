@@ -1,9 +1,21 @@
 <template>
 	<div class="main">
+		<div class="container">
+			<div class="row">
+				<div class="col-6">
+						<form action="" class="imgForm row justify-content-around">
+							<label for="image" class="col-5 btn btn-success" role="button" id="image_choose">выбрать</label>
+							<input type="file" v-show="false" id="image">
+							<div class="hmin btn btn-success col-5" id="send_image" @click="sendImage">отправить</div>
+						</form>
+				</div>
+			</div>
+		</div>
 		<form class="container">
 			<div class="row">
 				<div class="col-6 dg gg-1">
 					<div class="title">{{title}}</div>
+					
 					<input type="text" placeholder="название" class="w-100">
 					<textarea  class="w-100" name="composition" id="composition" cols="30" rows="10" placeholder="состав"></textarea>
 					<div class="row justify-content-around">
@@ -30,8 +42,15 @@
 			}
 		},
 		methods:{
-			postNewProduct: ()=>{
+			postNewProduct(){
 				$.post('/',JSON.stringify({"name":($("input").val()==''?null:$("input").val()),"composition": $("textarea").val()}))
+			},
+			sendImage(){
+				let file = $('#image')[0].files[0];
+				let xhr = new XMLHttpRequest();
+				xhr.open("POST", "image", true);
+				xhr.send(file);
+				return false;
 			}
 		},
 		components: {

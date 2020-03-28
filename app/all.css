@@ -7693,3 +7693,10 @@ a.text-dark:hover, a.text-dark:focus {
 .mv-4 {
   margin-top: 4rem;
   margin-bottom: 4rem; }
+
+.gafc {
+  grid-auto-flow: column; }
+
+.hmin {
+  height: -webkit-min-content;
+  height: min-content; }

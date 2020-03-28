@@ -94,6 +94,11 @@ const s = new h.Server((req,res)=>{
 			})
 		})	
 	}
+	if(req.url=='/image'){
+		req.pipe(
+		      fs.createWriteStream('file2.jpg')
+		    ).on('finish', () => res.end('ok'));
+	}
 	if(req.url=='/'){
 		res.writeHead(200,{"Content-Type": "text/html"})
 		res.end(fs.readFileSync('./app/index.html'))
