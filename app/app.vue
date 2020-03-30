@@ -46,11 +46,16 @@
 				$.post('/',JSON.stringify({"name":($("input").val()==''?null:$("input").val()),"composition": $("textarea").val()}))
 			},
 			sendImage(){
+				let filereader = new FileReader()
 				let file = $('#image')[0].files[0];
-				let xhr = new XMLHttpRequest();
-				xhr.open("POST", "image", true);
-				xhr.send(file);
-				return false;
+				filereader.onload = (e)=>{
+					file = e.target.result
+					console.log(file.slice(22))
+					$.post('/image',file).done((d)=>{console.log(d)})
+				}
+				filereader.readAsDataURL(file);
+
+				
 			}
 		},
 		components: {

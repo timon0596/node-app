@@ -95,9 +95,23 @@ const s = new h.Server((req,res)=>{
 		})	
 	}
 	if(req.url=='/image'){
-		req.pipe(
-		      fs.createWriteStream('file2.jpg')
-		    ).on('finish', () => res.end('ok'));
+		// req.pipe(
+		//       fs.createWriteStream('file2.jpg')
+		//     ).on('finish', () => res.end('ok'));
+		let data
+		req.on('data',(d)=>{
+			data+=d
+		})
+		req.on('end',()=>{
+			console.log(new Buffer(data.slice(30), "base64").toString("base64"))
+			base64 = data.slice(30)
+			let bitmap = new Buffer(base64, 'base64');
+			// write buffer to file
+			fs.writeFileSync("file2.png", bitmap);
+			res.end("ok")
+
+		})
+		
 	}
 	if(req.url=='/'){
 		res.writeHead(200,{"Content-Type": "text/html"})
