@@ -16,7 +16,7 @@
 				<div class="col-6 dg gg-1">
 					<div class="title">{{title}}</div>
 					
-					<input type="text" placeholder="название" class="w-100">
+					<input type="text" placeholder="название" class="w-100 name">
 					<textarea  class="w-100" name="composition" id="composition" cols="30" rows="10" placeholder="состав"></textarea>
 					<div class="row justify-content-around">
 						<div class="btn btn-success col-5" role="button">очистить</div>
@@ -43,14 +43,14 @@
 		},
 		methods:{
 			postNewProduct(){
-				$.post('/',JSON.stringify({"name":($("input").val()==''?null:$("input").val()),"composition": $("textarea").val()}))
+				$.post('/',JSON.stringify({"name":($("input.name").val()==''?null:$("input.name").val()),"composition": $("#composition").val()}))
 			},
 			sendImage(){
 				let filereader = new FileReader()
 				let file = $('#image')[0].files[0];
 				filereader.onload = (e)=>{
 					file = e.target.result
-					console.log(file.slice(22))
+					console.log(file)
 					$.post('/image',file).done((d)=>{console.log(d)})
 				}
 				filereader.readAsDataURL(file);

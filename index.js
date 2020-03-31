@@ -29,14 +29,16 @@ conn.sync()
 let error = ''
 const s = new h.Server((req,res)=>{
 	let data = ''
+//-------------------------------data insertion with duplicate checking-------------------------
 	if(req.method == 'POST'&&req.url=='/'){
 		req.on('data',(d)=>{
 			data=d
 		})
-//-------------------------------data insertion with duplicate checking-------------------------
+
 	req.on('end',()=>{
 		
 		data = JSON.parse(data)
+		console.log(data)
 
 		conn.query('SELECT * FROM products WHERE name = :name',
 		{
@@ -46,7 +48,7 @@ const s = new h.Server((req,res)=>{
 
 		}).then((d)=>{
 
-			if(!d.length>0 && !!data.name){
+			if(!(d.length>0) && !!data.name){
 
 				conn.query('INSERT IGNORE INTO products (products.name, products.composition) VALUES (:name, :comp)',
 				{
@@ -103,11 +105,11 @@ const s = new h.Server((req,res)=>{
 			data+=d
 		})
 		req.on('end',()=>{
-			console.log(new Buffer(data.slice(30), "base64").toString("base64"))
-			base64 = data.slice(30)
+			console.log(new Buffer(data.slice(31), "base64").toString("base64"))
+			base64 = data.slice(31)
 			let bitmap = new Buffer(base64, 'base64');
 			// write buffer to file
-			fs.writeFileSync("file2.png", bitmap);
+			fs.writeFileSync("file2.jpg", bitmap);
 			res.end("ok")
 
 		})
@@ -124,7 +126,7 @@ const s = new h.Server((req,res)=>{
 	if(req.url=='/bundle.js'){
 		res.writeHead(200,{"Content-Type": "text/javascript"})
 		res.end(fs.readFileSync('./app/bundle.js'))
-	}
+	}	
 	if(req.url=='/vendor.js'){
 		res.writeHead(200,{"Content-Type": "text/javascript"})
 		res.end(fs.readFileSync('./app/vendor.bundle.js'))
