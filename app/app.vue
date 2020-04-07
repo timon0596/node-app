@@ -1,13 +1,14 @@
 <template>
 	<div class="main">
+		<multipart></multipart>
 		<div class="container">
 			<div class="row">
 				<div class="col-6">
-						<form action="" class="imgForm row justify-content-around">
-							<label for="image" class="col-5 btn btn-success" role="button" id="image_choose">выбрать</label>
-							<input type="file" v-show="false" id="image">
-							<div class="hmin btn btn-success col-5" id="send_image" @click="sendImage">отправить</div>
-						</form>
+						<form action="/upload" method="post" enctype="multipart/form-data">
+						        <label>Файл</label><br>
+						        <input type="file" name="filedata" /><br><br>
+						        <input type="submit" value="Send" />
+						      </form>
 				</div>
 			</div>
 		</div>
@@ -31,6 +32,7 @@
 </template>
 <script>
 	import menu from './menu.vue'
+	import mpart from './multipartForm.vue'
 	export default {
 		data() {
 			return {
@@ -42,16 +44,24 @@
 			}
 		},
 		methods:{
+			inputChange(e){
+				console.log(e)
+			},
 			postNewProduct(){
 				$.post('/',JSON.stringify({"name":($("input.name").val()==''?null:$("input.name").val()),"composition": $("#composition").val()}))
 			},
 			sendImage(){
 				let filereader = new FileReader()
 				let file = $('#image')[0].files[0];
+				let imgData={
+					name: file.name,
+					size: file.size
+				}
+				console.log(imgData)
 				filereader.onload = (e)=>{
 					file = e.target.result
-					console.log(file)
 					$.post('/image',file).done((d)=>{console.log(d)})
+					$.post('/image',JSON.stringify(imgData)).done((d)=>{console.log(d)})
 				}
 				filereader.readAsDataURL(file);
 
@@ -59,10 +69,11 @@
 			}
 		},
 		components: {
-			productsList: menu
+			productsList: menu,
+			multipart: mpart
 		},
 		mounted() {
-			
+			$("#image").change((e)=>{console.log(e.target.files[0])})
 				const _this=this
 				this.mobserver = new MutationObserver(mutations => {
 

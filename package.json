@@ -41,12 +41,21 @@
   },
   "browserslist": "> 0.25%, not dead",
   "babel": {
-    "presets": ["@babel/preset-env"],
-    "plugins": ["syntax-async-functions","transform-regenerator"]
+    "presets": [
+      "@babel/preset-env"
+    ],
+    "plugins": [
+      "syntax-async-functions",
+      "transform-regenerator"
+    ]
   },
   "dependencies": {
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
     "bootstrap": "^4.4.1",
+    "express": "^4.17.1",
     "jquery": "^3.4.1",
+    "multer": "^1.4.2",
     "mysql2": "^2.1.0",
     "popper.js": "^1.16.1",
     "sequelize": "^5.21.5",
