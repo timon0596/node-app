@@ -41,6 +41,16 @@ const WebpackConfig = {
 						            })
 						          }
 					}
+				},
+		       	{
+				  test: /\.(jpe?g|png|svg)$/i,
+				  use:[ {
+				    loader: "file-loader",
+				    options: {
+				      name: "[name].[ext]",
+				      outputPath: '../imgs/',
+				      useRelativePath: true
+				  }}],
 				}
 			]
 		},

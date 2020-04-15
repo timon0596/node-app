@@ -10,30 +10,26 @@
 	export default {
 		data() {
 			return {
-				products: []
+				
 			}
 		},
 		mounted(){
-			this.getProducts()
+			
 		},
 		methods:{
-			getProducts(){
-				$.get('/getProducts',(d)=>{
-					this.products = [...JSON.parse(d)].reverse()
-				})
-			},
-			async updateProduct(e){
-				await $.post('/update',JSON.stringify(e))
-					.done(function( data ) {
-						console.log(data)
-    				})
-    			this.getProducts()
-			}
+			
+			// async updateProduct(e){
+			// 	await $.post('/update',JSON.stringify(e))
+			// 		.done(function( data ) {
+			// 			console.log(data)
+   //  				})
+   //  			this.getProducts()
+			// }
 		},
 		components: {
 			menuItem: menu_item 
 		},
-		props: ['itemsToShow']
+		props: ['itemsToShow','products']
 	}
 </script>
 <style>

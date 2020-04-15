@@ -1,6 +1,7 @@
 <template>
 	<div v-if="id<itemsToShow" class="card" style="width:400px">
-	  <img class="card-img-top" src="" alt="Card image">
+	  <img class="card-img-top" :src="imgPath" alt="Card image">
+	  <div class="" ref="imgpath" v-show="false">{{product.image}}</div>
 	  <div v-show="!isRedacting" class="card-body">
 	    <h4 ref="name" class="card-title">{{product.name}}</h4>
 	    <p ref="composition" class="card-text">{{product.composition}}</p>
@@ -25,7 +26,8 @@
 				productId: null,
 				isRedacting: false,
 				beforeRedacting: true,
-				textAreaHeight: 0
+				textAreaHeight: 0,
+				imgPath: ""
 			}
 		},
 		props: ['product','id','itemsToShow'],
@@ -51,12 +53,16 @@
 			}
 		},
 		mounted(){
-
+			console.log(this.$options.propsData.product.image)
+			this.imgPath = !!this.$options.propsData.product.image?("imgs/"+this.$options.propsData.product.image):""
 			this.$on('redacting',()=>{
 				this.textAreaHeight = $(this.$el).find('.card-text')[0].offsetHeight
 				this.isRedacting=!this.isRedacting
 			})
 			
+		},
+		updated(){
+			this.imgPath = !!this.$options.propsData.product.image?("imgs/"+this.$options.propsData.product.image):""
 		}
 	}
 </script>
