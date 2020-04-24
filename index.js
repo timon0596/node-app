@@ -9,7 +9,7 @@ const path = require("path")
 const storage = multer.diskStorage({
 	destination: "./imgs/",
 	filename: function(req,file,cb){
-		cb(null,String(file.originalname.match(/.+\./)).slice(0,-1) + "-" + Date.now()+path.extname(file.originalname))
+		cb(null,String(file.originalname.match(/.+\./)).slice(0,-1)+path.extname(file.originalname))
 	},
 	filefilter(req,file,next){
 		if(!!req.body.name&&file.mimetype.startsWith("image/")){
@@ -63,6 +63,24 @@ app.get('/', function (req, res) {
 	res.writeHead(200,{"Content-Type": "text/html"})
 	res.end(fs.readFileSync('./app/index.html'))
 })
+app.post('/img',(req,res)=>{
+	let data=""
+	req.on('data',(d)=>{
+		data+=d
+	})
+	req.on('end',()=>{
+		data = data.split(":")
+		let img = Buffer(data[2],"base64")
+		fs.writeFileSync("imgs/"+data[1],img)
+		prod.update({image: data[1]},{where: {id: data[0]}}).then((d)=>{
+				console.log(d)
+				res.writeHead(200,{"Content-Type": "text/plain"})
+				res.end("данные обновлены")
+			}).catch((e)=>{
+				console.log(e)
+			})
+	})
+})
 app.get('/getProducts', function (req, res) {
 	async function getProducts(){
 			let p = await prod.findAll().then((d)=>{
@@ -80,18 +98,31 @@ app.get('/getProducts', function (req, res) {
 
 app.post('/update', function (req, res) {
 	let data
-			req.on('data',(d)=>{
-				data=JSON.parse(d)
-			})
-			req.on('end',()=>{
-				prod.update({name: data.name,composition: data.composition},{where: {id: data.id}}).then((d)=>{
+	console.log(req.body)
+	data=req.body
+			prod.update({name: data.name,composition: data.composition},{where: {id: data.id}}).then((d)=>{
 					console.log(d)
 					res.writeHead(200,{"Content-Type": "text/plain"})
 					res.end("данные обновлены")
 				}).catch((e)=>{
 					console.log(e)
 				})
-			})
+})
+
+app.post('/deletePost',function(req,res){
+	let id = parseInt(req.body.id)
+	prod.destroy({
+      where: {
+        id: parseInt(req.body.id),
+      }
+    })
+    .then((d)=>{
+    	res.end(JSON.stringify(d))
+    })
+    .catch((er)=>{
+    	res.end(er.toString())
+    })
+	
 })
 
 app.post('/newProduct',upload.any(), function (req, res, next) {
@@ -113,7 +144,7 @@ app.post('/newProduct',upload.any(), function (req, res, next) {
 				
 			}
 		})
-		
+
 })
 
 app.listen(3000, function () {

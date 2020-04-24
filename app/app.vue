@@ -19,7 +19,7 @@
 				</div>
 			</div>
 		</form>
-		<productsList ref="productlist" :itemsToShow="itemsToShow" :products="products" class="mv-2"></productsList>
+		<productsList  v-on:dbtoupdate="updateProduct($event)" @post-to-delete="deletion($event)" ref="productlist" :itemsToShow="itemsToShow" :products="products" class="mv-2"></productsList>
 		<div ref="loader" style="height: 10px;"></div>		
 	</div>
 </template>
@@ -39,12 +39,31 @@
 			}
 		},
 		methods:{
+			deletion(e){
+				let _this=this
+				axios.post('/deletePost', e)
+					.then((d)=>{
+						console.log(d)
+						_this.getProducts()
+					})
+					.catch((er)=>{
+						console.log(er)
+					});
 
+			},
 			getProducts(){
 				$.get('/getProducts',(d)=>{
 					this.products = [...JSON.parse(d)].reverse()
-					console.log(this.products)
 				})
+			},
+			async updateProduct(e){
+				let _this=this
+				await $.post('/update',e)
+					.done(function( data ) {
+						console.log(data)
+						_this.getProducts()
+					})
+				
 			},
 			postNewProduct(){
 				let _this=this

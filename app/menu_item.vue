@@ -8,16 +8,33 @@
 	    <div class="btn btn-primary" role="button" @click="redact">редактировать</div>
 	  </div>
 	  <div v-show="isRedacting" class="card-body">
+	  	<input ref="file" type="file">
 	    <h4 class="card-title"><input ref="changedName" type="text" v-model:value="productName"></h4>
 	    <textarea v-model="productComposition" class="card-text" :style="{height:textAreaHeight+'px'}"></textarea>
 	    <p ref="changedComposition">{{productComposition}}</p>
-	    <div class="btn btn-primary" role="button" @click="redact">редактировать</div>
-	    <div class="btn btn-primary" role="button" @click="save">сохранить</div>
+		
+	    <div class="container">
+	    	<div v-if="!showWarning" class="row justify-content-between">
+	    		<div class="btn btn-primary" role="button" @click="redact">редактировать</div>
+	    		<div class="btn btn-primary" role="button" @click="save">сохранить</div>
+	    		<div class="btn btn-danger" role="button" @click="getSure">удалить</div>
+	    	</div>
+	    	<div v-if="showWarning" class="row flex-column align-items-center">
+	    		<h3 class="border-warning mb-4">Вы уверены?</h3>
+				<div class="container">
+					<div class="row justify-content-around">
+						<div class="btn btn-primary" role="button" @click="getSure">отмена</div>
+						<div class="btn btn-danger" role="button" @click="deletePost">удалить</div>
+					</div>
+				</div>
+	    	</div>
+	    </div>
 	    <div ref="id" class="productId" v-show="false">{{product.id}}</div>
 	  </div>
 	</div>
 </template>
 <script>
+	const axios = require('axios')
 	export default {
 		data() {
 			return {
@@ -27,7 +44,8 @@
 				isRedacting: false,
 				beforeRedacting: true,
 				textAreaHeight: 0,
-				imgPath: ""
+				imgPath: "",
+				showWarning: false
 			}
 		},
 		props: ['product','id','itemsToShow'],
@@ -45,11 +63,31 @@
 
 			},
 			save(){
-					
-					if(this.productName!=$(this.$refs.name).text() || this.productComposition!=$(this.$refs.composition).text()){
+					let id = this.productId
+					let file = this.$refs.file.files[0]
+					let reader = new FileReader();
+
+					  reader.readAsDataURL(file);
+
+					  reader.onload = function() {
+					  	let res = [...String(reader.result).match(/\/(.+)\;.+\,(.+)/)]
+					    axios.post('/img',id+":"+file.name+":"+res[2],{headers: {
+					'Content-Type': 'text/plain'
+				}}).then((d)=>{
+					console.log(d)
+				})
+					  };
+					if(this.productName!=$(this.$refs.name).text() || this.productComposition!=$(this.$refs.composition).text()||!!file){
 						this.$emit('dbtoupdate',{name: this.productName,composition: this.productComposition,id: this.productId})
 
 					}
+			},
+			getSure(){
+				this.showWarning = !this.showWarning
+			},
+			deletePost(){
+				
+					this.$emit('post-to-delete',{id: this.productId})
 			}
 		},
 		mounted(){

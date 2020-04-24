@@ -1,7 +1,7 @@
 <template>
 	<div class="assorted container">
 		<div class="dg gg-1">
-				<menuItem  v-on:dbtoupdate="updateProduct($event)" v-for="(product,id) in products" :product="product" :id="id" :itemsToShow="itemsToShow" :key="product.id"></menuItem>
+				<menuItem v-on:dbtoupdate="newEmit($event)" @post-to-delete="deletion($event)" v-for="(product,id) in products" :product="product" :id="id" :itemsToShow="itemsToShow" :key="product.id"></menuItem>
 		</div>
 	</div>
 </template>
@@ -17,14 +17,13 @@
 			
 		},
 		methods:{
+			newEmit(e){
+				this.$emit("dbtoupdate",{...e})
+			},
+			deletion(e){
+				this.$emit("post-to-delete",{...e})	
+			}
 			
-			// async updateProduct(e){
-			// 	await $.post('/update',JSON.stringify(e))
-			// 		.done(function( data ) {
-			// 			console.log(data)
-   //  				})
-   //  			this.getProducts()
-			// }
 		},
 		components: {
 			menuItem: menu_item 
