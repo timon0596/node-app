@@ -1,7 +1,6 @@
 <template>
 	<div v-if="id<itemsToShow" class="card" style="width:400px">
-	  <img class="card-img-top" :src="imgPath" alt="Card image">
-	  <div class="" ref="imgpath" v-show="false">{{product.image}}</div>
+	  <img class="card-img-top" :src="imgName" alt="Card image">
 	  <div v-show="!isRedacting" class="card-body">
 	    <h4 ref="name" class="card-title">{{product.name}}</h4>
 	    <p ref="composition" class="card-text">{{product.composition}}</p>
@@ -12,7 +11,6 @@
 	    <h4 class="card-title"><input ref="changedName" type="text" v-model:value="productName"></h4>
 	    <textarea v-model="productComposition" class="card-text" :style="{height:textAreaHeight+'px'}"></textarea>
 	    <p ref="changedComposition">{{productComposition}}</p>
-		
 	    <div class="container">
 	    	<div v-if="!showWarning" class="row justify-content-between">
 	    		<div class="btn btn-primary" role="button" @click="redact">редактировать</div>
@@ -29,7 +27,6 @@
 				</div>
 	    	</div>
 	    </div>
-	    <div ref="id" class="productId" v-show="false">{{product.id}}</div>
 	  </div>
 	</div>
 </template>
@@ -38,13 +35,8 @@
 	export default {
 		data() {
 			return {
-				productName: '',
-				productComposition: '',
-				productId: null,
 				isRedacting: false,
-				beforeRedacting: true,
 				textAreaHeight: 0,
-				imgPath: "",
 				showWarning: false
 			}
 		},
@@ -52,35 +44,30 @@
 		methods: {
 			redact() {
 				this.$emit('redacting')	
-				this.beforeRedacting?
-				(()=>{
-					this.productName=$(this.$refs.name).text()
-					this.productComposition=$(this.$refs.composition).text()
-					this.productId=$(this.$refs.id).text()
-					this.beforeRedacting=!this.beforeRedacting
-				})():null
-
-
 			},
 			save(){
 					let id = this.productId
 					let file = this.$refs.file.files[0]
+					console.log(file)
 					let reader = new FileReader();
-
-					  reader.readAsDataURL(file);
-
-					  reader.onload = function() {
-					  	let res = [...String(reader.result).match(/\/(.+)\;.+\,(.+)/)]
-					    axios.post('/img',id+":"+file.name+":"+res[2],{headers: {
-					'Content-Type': 'text/plain'
-				}}).then((d)=>{
-					console.log(d)
-				})
-					  };
-					if(this.productName!=$(this.$refs.name).text() || this.productComposition!=$(this.$refs.composition).text()||!!file){
+					try{
+							if(file){
+								reader.readAsDataURL(file);
+								reader.onload = function() {
+									let res = [...String(reader.result).match(/\/(.+)\;.+\,(.+)/)]
+									axios.post('/img' , id + ":" + file.name + ":" + res[2] , { headers: {'Content-Type': 'text/plain'}})
+										.then((d)=>{
+											console.log(d)
+										})
+								};
+							}
+					  	}
+					  	catch(e){
+					  		console.log(e)
+					  	}
+					  	
 						this.$emit('dbtoupdate',{name: this.productName,composition: this.productComposition,id: this.productId})
 
-					}
 			},
 			getSure(){
 				this.showWarning = !this.showWarning
@@ -90,9 +77,28 @@
 					this.$emit('post-to-delete',{id: this.productId})
 			}
 		},
+		computed:{
+			
+			imgName(){
+				return !!this.product.image?("imgs/"+this.product.image):""
+			},
+			productId(){
+				return this.product.id
+			},
+			productName:{
+				get(){
+					return this.product.name
+				},
+				set(){
+					this.product.name = $(this.$refs.changedName).val()
+				}
+			},
+			productComposition(){
+				return this.product.composition
+			}
+		},
 		mounted(){
-			console.log(this.$options.propsData.product.image)
-			this.imgPath = !!this.$options.propsData.product.image?("imgs/"+this.$options.propsData.product.image):""
+			console.log(this.productId)
 			this.$on('redacting',()=>{
 				this.textAreaHeight = $(this.$el).find('.card-text')[0].offsetHeight
 				this.isRedacting=!this.isRedacting
