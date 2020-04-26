@@ -9,7 +9,7 @@
 	  <div v-show="isRedacting" class="card-body">
 	  	<input ref="file" type="file">
 	    <h4 class="card-title"><input ref="changedName" type="text" v-model:value="productName"></h4>
-	    <textarea v-model="productComposition" class="card-text" :style="{height:textAreaHeight+'px'}"></textarea>
+	    <textarea ref="comp" v-model="productComposition" class="card-text" :style="{height:textAreaHeight+'px'}"></textarea>
 	    <p ref="changedComposition">{{productComposition}}</p>
 	    <div class="container">
 	    	<div v-if="!showWarning" class="row justify-content-between">
@@ -65,7 +65,7 @@
 					  	catch(e){
 					  		console.log(e)
 					  	}
-					  	
+
 						this.$emit('dbtoupdate',{name: this.productName,composition: this.productComposition,id: this.productId})
 
 			},
@@ -93,8 +93,13 @@
 					this.product.name = $(this.$refs.changedName).val()
 				}
 			},
-			productComposition(){
-				return this.product.composition
+			productComposition:{
+				get(){
+					return this.product.composition
+				},
+				set(){
+					this.product.composition = $(this.$refs.comp).val()
+				}
 			}
 		},
 		mounted(){

@@ -5,7 +5,6 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const multer = require('multer')
 const path = require("path")
-
 const storage = multer.diskStorage({
 	destination: "./imgs/",
 	filename: function(req,file,cb){
@@ -39,6 +38,29 @@ const conn = new seq('pie_db','root','',
 		dialect: 'mysql',
 		
 	})
+
+//-----------------------
+//-----------------------
+//-----------------------deleting excess imgs
+//-----------------------
+//-----------------------
+conn.query("SELECT image FROM products").then((d)=>{
+	d=d[0]
+	d=d.filter((e)=>{return e.image!==null})
+	d=d.map((e)=>{
+		return e.image
+	})
+	
+	fs.readdirSync(__dirname+"/imgs").forEach((el,i,ar)=>{
+		if(d.indexOf(el)==-1){fs.unlinkSync(__dirname+"/imgs/"+el)}
+	})
+})
+//-----------------------
+//-----------------------
+//-----------------------
+//-----------------------
+//-----------------------
+
 const prod = conn.define('products',{
 		name: {
 			type: seq.STRING,
@@ -137,7 +159,7 @@ app.post('/newProduct',upload.any(), function (req, res, next) {
 
 				conn.query('INSERT IGNORE INTO products (products.name, products.composition, products.image) VALUES (:name, :comp, :img)',
 					{
-						replacements: {name: req.body.name, comp: req.body.composition, img: req.files[0].filename},
+						replacements: {name: req.body.name, comp: req.body.composition, img: req.files[0]?req.files[0].filename:null},
 						type: seq.QueryTypes.INSERT
 					})
 				res.end("ok")

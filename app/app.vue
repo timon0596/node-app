@@ -13,7 +13,7 @@
 						<div class="hmin col-5" id="send_image2">изображение</div>
 					</div>
 					<div class="row justify-content-around">
-						<div class="btn btn-success col-5" role="button">очистить</div>
+						<div class="btn btn-success col-5" role="button" @click="cleanInputs">очистить</div>
 						<div class="btn btn-success col-5" role="button" @click="postNewProduct">добавить</div>
 					</div>
 				</div>
@@ -67,13 +67,21 @@
 			},
 			postNewProduct(){
 				let _this=this
-				let fd = new FormData($("#form111")[0])
-				axios.post('/newProduct',fd,{headers: {
-					'Content-Type': 'multipart/form-data'
-				}}).then((d)=>{
-					console.log(d)
-					_this.getProducts()
-				})
+				if(!!$("#form111 input[name='name'").val()){
+					let fd = new FormData($("#form111")[0])
+					axios.post('/newProduct',fd,{headers: {
+						'Content-Type': 'multipart/form-data'
+					}}).then((d)=>{
+						console.log(d)
+						_this.getProducts()
+					})
+					this.cleanInputs()
+				}
+				
+			},
+			cleanInputs(){
+				$("#form111 input").val("")
+				$("#form111 textarea").val("")
 			},
 			sendImage(){
 				let filereader = new FileReader()
