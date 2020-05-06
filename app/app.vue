@@ -1,6 +1,5 @@
 <template>
-	<div class="main">
-		
+	<div class="admin">
 		<form class="container" enctype="multipart/form-data" id="form111">
 			<div class="row">
 				<div class="col-6 dg gg-1">
@@ -103,7 +102,7 @@
 		},
 		components: {
 			productsList: menu,
-			multipart: mpart
+			multipart: mpart,
 		},
 		mounted() {
 			this.getProducts(),

@@ -20,9 +20,9 @@ const storage = multer.diskStorage({
 	}
 })
 const upload = multer({storage:storage});
-
 const app = express()
-app.use('/js1', express.static(__dirname+"/app/bundle.js"))
+// app.use(express.static(__dirname+"/app/admin.bundle.js"))
+app.use(express.static(__dirname+"/app/client.bundle.js"))
 app.use('/js', express.static(__dirname+"/app/vendor.bundle.js"))
 app.use('/all.css', express.static(__dirname+"/app/all.css"))
 
@@ -83,8 +83,12 @@ conn.sync()
 
 app.get('/', function (req, res) {
 	res.writeHead(200,{"Content-Type": "text/html"})
-	res.end(fs.readFileSync('./app/index.html'))
+	res.end(fs.readFileSync('./app/client/client.html'))
 })
+// app.get('/admin', function (req, res) {
+// 	res.writeHead(200,{"Content-Type": "text/html"})
+// 	res.end(fs.readFileSync('./app/index.html'))
+// })
 app.post('/img',(req,res)=>{
 	let data=""
 	req.on('data',(d)=>{
@@ -173,4 +177,3 @@ app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
 
-console.log(path.resolve(__dirname,"imgs"))

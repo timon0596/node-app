@@ -7,9 +7,11 @@ const webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const WebpackConfig = {
-	entry: ['babel-polyfill', './app/all.js'],
+	entry: {
+		"client": ['babel-polyfill', './app/client/client.js']
+	},
 		output: {
-			filename: 'bundle.js'
+			filename: '[name].bundle.js'
 		},
 		mode: 'development',
 		devtool: 'eval-source-map',
@@ -86,10 +88,10 @@ gulp.task('sass',()=>{
         .pipe(gulp.dest('app'))
 })
 gulp.task('js',()=>{
-	return gulp.src('./app/all.js').pipe(wpkstr(WebpackConfig,webpack)).pipe(gulp.dest('app'))
+	return gulp.src('./app/**/*.js').pipe(wpkstr(WebpackConfig,webpack)).pipe(gulp.dest('app'))
 })
 gulp.task('watch',gulp.series('js',()=>{
 	gulp.watch(['./sass/**/*.sass'],gulp.series('sass'))
-	gulp.watch(['./app/all.js','./app/js/**/*.js','./app/**/*.vue'],gulp.series('js'))
+	gulp.watch(['./app/all.js','./app/**/*.js','./app/**/*.vue'],gulp.series('js'))
 }))
 
