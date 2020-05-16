@@ -32,9 +32,9 @@ app.use(bodyParser.json())
 
 app.use(express.static(__dirname));
 
-const conn = new seq('pie_db','root','',
+const conn = new seq('id13730034_db1','id13730034_user1','Vuejstestpassword270596',
 	{
-		host: 'localhost', 
+		host: 'https://databases.000webhost.com/', 
 		dialect: 'mysql',
 		
 	})
